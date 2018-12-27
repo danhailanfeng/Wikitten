@@ -905,7 +905,14 @@ class MarkdownExtra extends \Michelf\Markdown {
 		$alt_text = $this->encodeAttribute($alt_text);
 		if (isset($this->urls[$link_id])) {
 			$url = $this->encodeURLAttribute($this->urls[$link_id]);
-			$result = "<img src=\"$url\" alt=\"$alt_text\"";
+			
+			## start : display images with relative paths ##
+			$mdpath=$_SERVER["REQUEST_URI"];
+			$mdpath=preg_replace("/\/[^\/.]+\//","$0library/",$mdpath,1);
+			$mdpath=preg_replace("/\/[^\/]+\.md/","",$mdpath);
+			$result = "<img src=\"$mdpath/$url\" alt=\"$alt_text\"";
+			## end : display images with relative paths ##
+			
 			if (isset($this->titles[$link_id])) {
 				$title = $this->titles[$link_id];
 				$title = $this->encodeAttribute($title);
@@ -932,7 +939,14 @@ class MarkdownExtra extends \Michelf\Markdown {
 
 		$alt_text = $this->encodeAttribute($alt_text);
 		$url = $this->encodeURLAttribute($url);
-		$result = "<img src=\"$url\" alt=\"$alt_text\"";
+		
+		## start : display images with relative paths ##
+		$mdpath=$_SERVER["REQUEST_URI"];
+		$mdpath=preg_replace("/\/[^\/.]+\//","$0library/",$mdpath,1);
+		$mdpath=preg_replace("/\/[^\/]+\.md/","",$mdpath);
+		$result = "<img src=\"$mdpath/$url\" alt=\"$alt_text\"";
+		## end : display images with relative paths ##
+		
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
 			$result .=  " title=\"$title\""; # $title already quoted
