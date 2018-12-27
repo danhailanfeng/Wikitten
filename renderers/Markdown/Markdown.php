@@ -747,7 +747,14 @@ class Markdown implements MarkdownInterface {
 
 		$alt_text = $this->encodeAttribute($alt_text);
 		$url = $this->encodeURLAttribute($url);
-		$result = "<img src=\"$url\" alt=\"$alt_text\"";
+		
+		## start : display images with relative paths ##
+		$mdpath=$_SERVER["REQUEST_URI"];
+		$mdpath=preg_replace("/\/[^\/.]+\//","$0library/",$mdpath,1);
+		$mdpath=preg_replace("/\/[^\/]+\.md/","",$mdpath);
+		$result = "<img src=\"$mdpath/$url\" alt=\"$alt_text\"";
+		## end : display images with relative paths ##
+
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
 			$result .=  " title=\"$title\""; # $title already quoted
